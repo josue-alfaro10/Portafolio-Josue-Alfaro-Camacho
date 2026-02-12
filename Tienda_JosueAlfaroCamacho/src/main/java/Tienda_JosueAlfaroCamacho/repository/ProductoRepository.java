@@ -4,10 +4,12 @@
  */
 package Tienda_JosueAlfaroCamacho.repository;
 
-/**
- *
- * @author Alfaro
- */
-public interface ProductoRepository {
-    
+import Tienda_JosueAlfaroCamacho.domain.Producto;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+ 
+public interface ProductoRepository extends JpaRepository<Producto, Integer> {
+ 
+    public List<Producto> findByActivoTrue();
+ 
 }
