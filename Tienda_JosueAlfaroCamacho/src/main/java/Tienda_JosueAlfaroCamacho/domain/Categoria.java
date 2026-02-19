@@ -7,6 +7,8 @@ package Tienda_JosueAlfaroCamacho.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
+import jakarta.persistence.OneToMany;
+import java.util.List;
 import lombok.Data;
 
 @Data
@@ -22,15 +24,19 @@ public class Categoria implements Serializable {
     private Integer idCategoria;
     
     @Column(unique=true, nullable=false, length=50)
-    @NotNull
-    @Size(max=50)
+    //@NotNull
+    //@Size(max=50)
     private String descripcion;
     
     @Column(length=1024)
-    @Size(max=1024)
+    //@Size(max=1024)
     private String rutaImagen;
     
+    @Column(name="activo")
     private boolean activo;
+    
+    @OneToMany(mappedBy="categoria")
+    private List<Producto> productos;
             
 }
 
