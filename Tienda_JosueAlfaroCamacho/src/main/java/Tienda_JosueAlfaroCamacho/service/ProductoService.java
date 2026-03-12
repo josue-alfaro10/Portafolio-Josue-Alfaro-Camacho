@@ -3,6 +3,7 @@ package Tienda_JosueAlfaroCamacho.service;
 import Tienda_JosueAlfaroCamacho.domain.Producto;
 import Tienda_JosueAlfaroCamacho.repository.ProductoRepository;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +14,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ProductoService {
- 
+
     private final ProductoRepository productoRepository;
     private final FirebaseStorageService firebaseStorageService;
- 
-    public ProductoService(ProductoRepository productoRepository, FirebaseStorageService firebaseStorageService) {
+
+    public ProductoService(ProductoRepository productoRepository,
+            FirebaseStorageService firebaseStorageService) {
         this.productoRepository = productoRepository;
         this.firebaseStorageService = firebaseStorageService;
     }
- 
+
     @Transactional(readOnly = true)
     public List<Producto> getProductos(boolean activo) {
         if (activo) {
@@ -29,16 +31,16 @@ public class ProductoService {
         }
         return productoRepository.findAll();
     }
- 
+
     @Transactional(readOnly = true)
     public Optional<Producto> getProducto(Integer idProducto) {
         return productoRepository.findById(idProducto);
     }
- 
+
     @Transactional
     public void save(Producto producto, MultipartFile imagenFile) {
         producto = productoRepository.save(producto);
-        if (!imagenFile.isEmpty()) { // Si no está vacío... pasaron una imagen...
+        if (!imagenFile.isEmpty()) { //Si no está vacío... pasaron una imagen...            
             try {
                 String rutaImagen = firebaseStorageService.uploadImage(
                         imagenFile, "producto",
@@ -46,11 +48,11 @@ public class ProductoService {
                 producto.setRutaImagen(rutaImagen);
                 productoRepository.save(producto);
             } catch (IOException e) {
- 
+
             }
         }
     }
- 
+
     @Transactional
     public void delete(Integer idProducto) {
         // Verifica si la categoría existe antes de intentar eliminarlo
@@ -65,5 +67,20 @@ public class ProductoService {
             throw new IllegalStateException("No se puede eliminar la producto. Tiene datos asociados.", e);
         }
     }
- 
+
+    @Transactional(readOnly = true)
+    public List<Producto> consultaDerivada(BigDecimal precioInf, BigDecimal precioSup) {
+        return productoRepository.findByPrecioBetweenOrderByPrecioAsc(precioInf, precioSup);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> consultaJPQL(BigDecimal precioInf, BigDecimal precioSup) {
+        return productoRepository.consultaJPQL(precioInf, precioSup);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Producto> consultaSQL(BigDecimal precioInf, BigDecimal precioSup) {
+        return productoRepository.consultaSQL(precioInf, precioSup);
+    }
+
 }
