@@ -7,6 +7,7 @@ package Tienda_JosueAlfaroCamacho.controller;
 
 import Tienda_JosueAlfaroCamacho.service.CategoriaService;
 import Tienda_JosueAlfaroCamacho.service.ProductoService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,8 @@ public class IndexController {
     }
     
     @GetMapping("/")
-    public String cargarPaginaInicio(Model model) {
+    public String cargarPaginaInicio(Model model, HttpServletRequest request) {
+        request.getSession();
         var lista = productoService.getProductos(true);
         model.addAttribute("productos", lista);
         var categorias = categoriaService.getCategorias(true);

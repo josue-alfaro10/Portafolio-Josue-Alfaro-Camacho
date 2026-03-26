@@ -4,10 +4,16 @@
  */
 package Tienda_JosueAlfaroCamacho.repository;
 
+import Tienda_JosueAlfaroCamacho.domain.Rol;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 /**
  *
  * @author Alfaro
  */
-public interface RolRepository {
-    
+public interface RolRepository extends JpaRepository<Rol, Integer> {
+
+    public Optional<Rol> findByRol(String rol);
+
 }
