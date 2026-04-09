@@ -12,7 +12,10 @@
         <script th:src="@{/js/rutinas.js}"></script>
         <script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
         <script th:src="@{/webjars/popper.js/2.11.7/umd/popper.min.js}"></script>
-        <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.min.js}"></script>        
+        <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.min.js}"></script> 
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
     </head>
     <body>
         <!-- Fragmento #2  define el encabezado de las páginas, en concreto el menú y enlaces rápidos -->
